@@ -1,9 +1,15 @@
-const Hapi = require('@hapi/hapi');
-const ClientError = require('../../Commons/exceptions/ClientError');
-const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
-const users = require('../../Interfaces/http/api/users');
-const authentications = require('../../Interfaces/http/api/authentications');
-const threads = require('../../Interfaces/http/api/threads');
+const Hapi = require('@hapi/hapi')
+const Jwt = require('@hapi/jwt')
+const config = require('../../Commons/config')
+
+const ClientError = require('../../Commons/exceptions/ClientError')
+const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator')
+
+const users = require('../../Interfaces/http/api/users')
+const authentications = require('../../Interfaces/http/api/authentications')
+const threads = require('../../Interfaces/http/api/threads')
+const comments = require('../../Interfaces/http/api/comments')
+const replies = require('../../Interfaces/http/api/replies')
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -52,10 +58,10 @@ const createServer = async (container) => {
       plugin: comments,
       options: { container }
     },
-    // {
-    //   plugin: replies,
-    //   options: { container }
-    // }
+    {
+      plugin: replies,
+      options: { container }
+    }
   ])
 
   server.ext('onPreResponse', (request, h) => {
@@ -97,4 +103,4 @@ const createServer = async (container) => {
   return server
 }
 
-module.exports = createServer;
+module.exports = createServer

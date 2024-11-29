@@ -14,7 +14,9 @@ exports.up = pgm => {
       },
       date: {
         type: 'TEXT',
-        notNull: true
+        notNull: true 
+        //default: pgm.func('current_timestamp'),
+        // Kamu bisa mendefinisikan nilai default di sini, sehingga tidak perlu lagi memberikan nilai ketika memasukkan data ke dalam tabel
       },
       user_id: {
         type: 'VARCHAR(50)'

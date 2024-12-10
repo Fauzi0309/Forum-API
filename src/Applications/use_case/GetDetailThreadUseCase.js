@@ -3,10 +3,11 @@ const DetailReply = require('../../Domains/replies/entities/DetailReply')
 const DetailThread = require('../../Domains/threads/entities/DetailThread')
 
 class GetDetailThreadUseCase {
-  constructor ({ threadRepository, commentRepository, replyRepository }) {
+  constructor ({ threadRepository, commentRepository, replyRepository, userCommentLikeRepository }) {
     this._threadRepository = threadRepository
     this._commentRepository = commentRepository
     this._replyRepository = replyRepository
+    this._userCommentLikeRepository = userCommentLikeRepository
   }
 
   async execute (useCaseParam) {
@@ -35,10 +36,13 @@ class GetDetailThreadUseCase {
         contentComment = comment.content
       }
 
+      const likeCount = await this._userCommentLikeRepository.getCommentLikeByCommentId(comment.id)
+
       const commentObject = new DetailComment({
         id: comment.id,
         content: contentComment,
         date: comment.date,
+        likeCount,
         username: comment.username,
         replies: []
       })
